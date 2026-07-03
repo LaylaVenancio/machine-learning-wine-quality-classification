@@ -2,9 +2,11 @@
 
 ## 1. Compreensão do problema
 
-O objetivo do relatório é documentar a construção de uma pipeline de Machine Learning para a **classificação da qualidade de vinhos, com base em suas características físico-químicas**. A base de dados utilizada é a Wine Quality Dataset, [disponível no Kaggle](https://www.kaggle.com/datasets/yasserh/wine-quality-dataset) e o resultado almejado é auxiliar enólogos na tomada de decisão e padronização do processo produtivo, almejando a obtenção de vinhos de alta qualidade. 
+O objetivo do relatório é documentar a construção de uma pipeline de Machine Learning para a **classificação da qualidade de vinhos, com base em suas características físico-químicas**. 
 
-Para atingir esse objetivo, foram construídos dois modelos, um baseado no algoritmo **K-Nearest Neighbors (KNN)** e o outro no **Random Forest**. Em ambos os casos, a variável alvo é *high_quality*, que foi criada como uma classificação binária da coluna *quality*: No caso de quality ser ≥ 7 então *high_quality* é igual a 1, senão é igual a 0.
+A base de dados utilizada é a Wine Quality Dataset, [disponível no Kaggle](https://www.kaggle.com/datasets/yasserh/wine-quality-dataset) e o resultado almejado é auxiliar enólogos na tomada de decisão e padronização do processo produtivo, culminando na obtenção de vinhos de alta qualidade. 
+
+Para atingir esse objetivo, foram construídos dois modelos, um baseado no algoritmo **K-Nearest Neighbors (KNN)** e o outro no **Random Forest**. Em ambos os casos, a variável alvo é *high_quality*, que foi criada como uma classificação binária da coluna *quality*: no caso de quality ser ≥ 7 então *high_quality* é igual a 1, senão é igual a 0.
 
 ## 2. Análise Exploratória de Dados (EDA)
 
@@ -20,7 +22,7 @@ Para atingir esse objetivo, foram construídos dois modelos, um baseado no algor
   
 * **Sulphates (0.21):** A relação entre *Sulphates* e *high_quality* é fraca (0.21) e diretamente proporcional. Os sulfitos podem surgir naturalmente durante a fermentação do vinho ou serem adicionados durante o processo com o objetivo de conservar a bebida (RAW WINE, [s.d.]).
 
-Podemos perceber, que entre as 4 variáveis que mais estão correlacionadas com *high_quality*, duas delas agem sobre a conservação da bebida (*Citric Acidity* e *Sulphates*) e duas no paladar (*alcohol* e *volatile acidity*). 
+Podemos perceber, que entre as quatro variáveis que mais estão correlacionadas com *high_quality*, duas delas agem sobre a conservação da bebida (*Citric Acidity* e *Sulphates*) e duas no paladar (*alcohol* e *volatile acidity*). 
 
 Sobre **multicolinearidade**, ou seja, variáveis explicativas que possuem relação entre si, como *Fixed Acidity* e *PH* (-0.69). O entendimento é por manter todas as varíaveis, pois pelo valor da correlação e a escolha dos modelos, **K-Nearest Neighbors (KNN)** e **Random Forest**, o impacto, caso exista, será mínimo.
 
@@ -64,27 +66,44 @@ Nesta etapa foi realizada a exclusão das colunas *quality* e *id*, inúteis par
 
 Optei por realizar a normalização das variáveis explicativas porque originalmente elas estavam em diferentes escalas, o que poderia influenciar o modelo negativamente. 
 
-Como primeira ação desta etapa, realizei a separação dos dados entre treino e teste, para evitar que houvesse o vazamento de dados. Nesse processo, foi utilizado o parâmetro stratify=y para garantir que a proporção entre as classes mantenha a proporção.
+Como primeira ação desta etapa, realizei a separação dos dados entre treino e teste, para evitar que houvesse o vazamento de dados. Nesse processo, foi utilizado o parâmetro *stratify=y* para garantir que a proporção entre as classes mantenha a proporção.
 
 Na sequência, utilizei a normalização com **StandardScaler** que modifica os dados para que eles tenham média igual a 0 e desvio padrão igual a 1. A escolha por essa técnica em detrimento da **MinMaxScaler** se dá pela existência de outliers no dataset, a **StandardScaler** não impõe limite fixo aos valores finais gerados, evitando o achamento dos dados em um dos extremos.
 
 ### 4. Desenvolvimento de Modelos
 
-Para a seleção de hiperparâmetros de ambos os modelos, foi utilizada validação cruzada estratificada com 5 folds (StratifiedKFold, n_splits=5). A estratificação garante que cada fold mantenha a proporção original entre as classes, evitando que folds de validação fiquem sem representação da classe minoritária. O parâmetro shuffle=True garante que possíveis ordenações nos dados não introduzam viés nos folds, e random_state=42 assegura a reprodutibilidade dos resultados
+Os algoritmos utilizados serão: **K-Nearest Neighbors (KNN)** e **Random Forest**. O motivo da escolha é o fato de que eles abordam o objetivo de formas diferentes:
+
+* **K-Nearest Neighbors (KNN)**: é um algoritmo não paramétrico que classifica novos dados baseando-se nas distâncias entre os K vizinhos mais próximos no espaço.
+* **Random Forest**: é um algoritmo não paramétrico que classifica novos dados com base no resultado de um conjunto de Árvores de Decisão, reduzindo a chance de overfitting em comparação com o uso de uma única árvore. 
+
+Para a seleção de hiperparâmetros de ambos os modelos, foi utilizada **validação cruzada estratificada com 5 folds** (*StratifiedKFold, n_splits=5*). A estratificação garante que cada fold mantenha a proporção original entre as classes, evitando que folds de validação fiquem sem representação da classe minoritária. O parâmetro *shuffle=True* garante que possíveis ordenações nos dados não introduzam viés nos folds, e *random_state=42* assegura a reprodutibilidade dos resultados
 
 **K-Nearest Neighbors (KNN)**
 
-O **K-Nearest Neighbors (KNN)** é um algoritmo não paramétrico que classifica novos dados baseando-se nas distâncias entre os K vizinhos mais próximos no espaço. 
+Para definir o hiperparâmetro K, a quantidade de vizinhos considerados na classificação, foram testados todos os valores inteiros de 1 a 20. Para cada valor, o *F1-score* foi estimado e o melhor K encontrado foi 7.
 
-Para definir o hiperparâmetro K — a quantidade de vizinhos considerados na classificação — foram testados todos os valores inteiros de 1 a 20. Para cada valor, o F1-score foi estimado e o melhor K encontrado foi 7, com F1 médio de 0.467.
+O *F1-score* foi escolhido como critério de seleção por ser a métrica mais adequada para problemas com desbalanceamento de classes, pois equilibra as métricas precisão e recall em uma única medida. Além disso, o modelo foi configurado com *weights='distance'*, fazendo com que vizinhos mais próximos tenham maior peso na votação, comportamento mais robusto para dados com outliers, como é o caso deste dataset. 
 
-O F1-score foi escolhido como critério de seleção por ser a métrica mais adequada para problemas com desbalanceamento de classes, pois equilibra as métricas precisão e recall em uma única medida. Além disso, o modelo foi configurado com weights='distance', fazendo com que vizinhos mais próximos tenham maior peso na votação, comportamento mais robusto para dados com ruído e outliers, como é o caso deste dataset. 
+<img width="1245" height="617" alt="image" src="https://github.com/user-attachments/assets/de48a6e5-2f4a-4afd-baf6-2d8e978e8544" />
 
-<img width="1247" height="631" alt="image" src="https://github.com/user-attachments/assets/50340a36-48bd-441f-b3ab-46937ff2d065" />
 
 **Random Forest**
 
+Para definir o hiperparâmetro *max_depth*, o limite de perguntas sequenciais que ela pode fazer até chegar à classificação final de um dado, foram testados todos os valores inteiros de 2 a 20. Para cada valor, o *F1-score* foi estimado e o melhor *max_depth* encontrado foi 3.
 
+O *max_depth* foi selecionado utilizando o *F1-score* como critério — pela mesma razão descrita na seção anterior: é a métrica mais adequada para problemas com desbalanceamento de classes. Além disso, o modelo foi configurado com *class_weight='balanced'*, que atribui pesos inversamente proporcionais à frequência de cada classe durante o treino com o objetivo de compensar o desbalanceamento das classes.
+
+A busca pelo max_depth ótimo se justifica porque árvores sem restrição de profundidade tendem a memorizar o conjunto de treino (overfitting). Dessa forma, o valor ótimo encontrado foi *max_depth*=3.
+
+<img width="1247" height="623" alt="image" src="https://github.com/user-attachments/assets/0d8c4f9c-5344-42fa-b8b1-74e473388761" />
+
+O gráfico de importância das variáveis confirma os achados da análise exploratória de dados (EDA): *alcohol, sulphates, volatile acidity e citric acid* — as quatro variáveis com maior correlação com a qualidade do vinho — foram também as mais relevantes segundo o modelo. Essa convergência entre a análise exploratória e o critério interno do Random Forest reforça a consistência da análise realizada. Como ponto de diferenciação, *sulphates* ocupou a segunda posição em importância no Random Forest, acima de volatile acidity e citric acid — uma inversão em relação ao ranking de correlação de Pearson da EDA, onde volatile acidity aparecia em segundo lugar. Isso sugere que sulphates captura padrões não-lineares relevantes para a classificação que a correlação linear não dimensionava completamente.
+
+<img width="1252" height="622" alt="image" src="https://github.com/user-attachments/assets/0296b3e1-5ee2-4f91-8804-4ee5477ff65c" />
+
+
+### 5. 
 
 ## 7. Referências 
 
