@@ -24,7 +24,7 @@ Para atingir esse objetivo, foram construídos dois modelos, um baseado no algor
 
 Podemos perceber, que entre as quatro variáveis que mais estão correlacionadas com *high_quality*, duas delas agem sobre a conservação da bebida (*Citric Acidity* e *Sulphates*) e as demais no paladar (*alcohol* e *volatile acidity*). 
 
-Sobre **multicolinearidade**, ou seja, variáveis explicativas que possuem relação entre si, como *Fixed Acidity* e *PH* (-0.69). A decisão foi manter todas as variáveis, pois, dado o valor da correlação e a escolha dos modelos (KNN e Random Forest), o impacto, caso exista, será mínimo.
+Sobre **multicolinearidade**, ou seja, variáveis explicativas que possuem relação entre si, como *Fixed Acidity* e *PH* (-0.69). A decisão foi manter todas as variáveis, pois, dado o valor da correlação e a escolha dos modelos (**KNN** e **Random Forest**), o impacto, caso exista, será mínimo.
 
 ### 2.2 Distribuição de variáveis
 
@@ -98,7 +98,9 @@ A busca pelo max_depth ótimo se justifica porque árvores sem restrição de pr
 
 <img width="1247" height="623" alt="image" src="https://github.com/user-attachments/assets/0d8c4f9c-5344-42fa-b8b1-74e473388761" />
 
-O gráfico de importância das variáveis confirma os achados da análise exploratória de dados (EDA): *alcohol, sulphates, volatile acidity e citric acid* — as quatro variáveis com maior correlação com a qualidade do vinho — foram também as mais relevantes segundo o modelo. Essa convergência entre a análise exploratória e o critério interno do Random Forest reforça a consistência da análise realizada. Como ponto de diferenciação, *sulphates* ocupou a segunda posição em importância no Random Forest, acima de volatile acidity e citric acid — uma inversão em relação ao ranking de correlação de Pearson da EDA, onde volatile acidity aparecia em segundo lugar. Isso sugere que sulphates captura padrões não-lineares relevantes para a classificação que a correlação linear não dimensionava completamente.
+O gráfico de importância das variáveis confirma os achados da análise exploratória de dados (EDA): *alcohol, sulphates, volatile acidity e citric acid* — as quatro variáveis de maior correlação com *high_quality* foram também as mais importantes para o algoritmo. 
+
+A convergência entre a análise exploratória e o critério interno do **Random Forest** reforça a consistência da análise realizada. Como ponto de diferenciação, *sulphates* ocupou a segunda posição em importância no **Random Forest**, acima de volatile acidity e citric acid — uma inversão em relação ao ranking de correlação de Pearson da EDA, onde volatile acidity ocupou o segundo lugar. Isso sugere que sulphates captura padrões não-lineares relevantes para a classificação que a correlação linear não dimensionava completamente.
 
 <img width="1252" height="622" alt="image" src="https://github.com/user-attachments/assets/0296b3e1-5ee2-4f91-8804-4ee5477ff65c" />
 
@@ -108,23 +110,28 @@ Para a avaliação do modelo, utilizou-se o cálculo da acurácia geral e a prec
 
 <img width="202" height="107" alt="image" src="https://github.com/user-attachments/assets/b27d10c7-4a4f-4631-a283-55e0bc493004" />
 
-Apesar da acurácia geral em ambos os casos ser acima de 0.8, com **K-Nearest Neighbors (KNN)** (0.897) performando melhor que **Random Forest** (0.848), a performance dos modelos em relação a classe 1 é diferente. 
+Apesar da acurácia geral em ambos os casos ser acima de 0.8, com **K-Nearest Neighbors (KNN)** (0.897) superando **Random Forest** (0.848), a performance dos modelos em relação a classe 1 é diferente. 
 
-Em relação a precisão, ou seja, a assertividade dos vinhos classificados como de qualidade (1) pelo algorotimo, KNN se destaca. Nesse modelo, 65.0% dos vinhos atribuídos como de alta qualidade realmente o são, vencendo Random Forest que possui precisão de 45.5%.
+Em relação a precisão, ou seja, a assertividade dos vinhos classificados como de qualidade (1) pelo algoritmo, **KNN** se destaca. Nesse modelo, 65.0% dos vinhos atribuídos como de alta qualidade realmente o são, vencendo **Random Forest** que possui precisão de 45.5%.
 
-Sobre recall, ou seja, a capacidade de modelo em encontrar os vinhos de qualidade (1) corretamente, o cenário se inverte com Random Forest (74,1%) e KNN (48.1%).
+Sobre recall, ou seja, a capacidade de modelo em encontrar os vinhos de qualidade (1) corretamente, o cenário se inverte com **Random Forest** (74,1%) e **KNN** (48.1%).
 
-Por fim, o *F1-Score* de ambos os modelos é bem similar: Random Forest (56.3%) e KNN (55.3%)
+Por fim, o *F1-Score* de ambos os modelos é bem similar: **Random Forest** (56.3%) e **KNN** (55.3%)
 
 <img width="557" height="312" alt="image" src="https://github.com/user-attachments/assets/56616051-7526-4347-926d-39dd136cba5b" />
 
-Essa diferença entre as métricas de validação nos dois algoritmos também é observada na matriz de confusão. Para KNN, o gargalo são os vinhos que ele deixa de classificar como alta qualidade, já para Random Forest ele classifica a maior parte dos vinhos de alta qualidade, mas inclui também vinhos que não o são.
+Essa diferença entre as métricas de validação nos dois algoritmos também é observada na matriz de confusão. Para **KNN**, o gargalo são os falsos negativos, ou seja, os vinhos que ele deixa de classificar como alta qualidade (1). Já para **Random Forest**, a situação se inverte e ele classifica a maior parte dos vinhos de alta qualidade, mas aumenta também o número de falsos positivos.
 
 <img width="597" height="261" alt="image" src="https://github.com/user-attachments/assets/dba1f34a-75fd-4687-8832-00ddbfebd396" />
 
 
 ### 6. Interpretação dos Resultados 
 
+Em resumo, é possível concluir que as variáveis que mais influenciam ao vinho em ser classificado como de qualidade são: *alcohol, sulphates, volatile acidity e citric acid*. Essas variáveis se mostram relevantes tanto na *Correlação de Pearson* quanto no gráfico de importância de variáveis de **Random Forest**. Qualitativamente, percebe-se que essas variáveis influenciam a conservação da bebida e a palatabilidade para o consumidor final. 
+
+Dessa forma, a implicação para o processo de produção, é que essas variáveis devem ser observadas sob um rigido controle de qualidade. Utilizando o exemplo de *alcohol*, apesar do vinhos de qualidade possuírem maior mediana no nível de álcool, parece haver um limite em 14%.
+
+Por fim, os modelos construídos apresentam características diferentes que devem ser consideradas ao serem utilizadas por enólogos. O **KNN** é mais eficiente na assertividade do que é classificado como positivo, já o **Random Forest** possui maior capacidade de encontrar os casos positivos reais.
 
 ## 7. Referências 
 
