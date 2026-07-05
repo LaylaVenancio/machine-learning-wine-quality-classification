@@ -68,7 +68,7 @@ Optei por realizar a normalização das variáveis explicativas porque originalm
 
 Como primeira ação desta etapa, realizei a separação dos dados entre treino e teste, para evitar que houvesse o vazamento de dados. Nesse processo, foi utilizado o parâmetro *stratify=y* para garantir que a proporção entre as classes mantenha a proporção.
 
-Na sequência, utilizei a normalização com **StandardScaler** que modifica os dados para que eles tenham média igual a 0 e desvio padrão igual a 1. A escolha por essa técnica em detrimento da **MinMaxScaler** se dá pela existência de outliers no dataset, a **StandardScaler** não impõe limite fixo aos valores finais gerados, evitando o achamento dos dados em um dos extremos.
+Na sequência, utilizei a normalização com *StandardScaler* que modifica os dados para que eles tenham média igual a 0 e desvio padrão igual a 1. A escolha por essa técnica em detrimento da *MinMaxScaler* se dá pela existência de outliers no dataset, a *StandardScaler* não impõe limite fixo aos valores finais gerados, evitando o achamento dos dados em um dos extremos.
 
 ### 4. Desenvolvimento de Modelos
 
@@ -102,8 +102,30 @@ O gráfico de importância das variáveis confirma os achados da análise explor
 
 <img width="1252" height="622" alt="image" src="https://github.com/user-attachments/assets/0296b3e1-5ee2-4f91-8804-4ee5477ff65c" />
 
+### 5. Avaliação de Modelos
 
-### 5. 
+Para a avaliação do modelo, utilizou-se o cálculo da acurácia geral e a precisão, recall e F1-score da classe 1 da variável target, que representa os vinhos de alta qualidade.
+
+<img width="202" height="107" alt="image" src="https://github.com/user-attachments/assets/b27d10c7-4a4f-4631-a283-55e0bc493004" />
+
+Apesar da acurácia geral em ambos os casos ser acima de 0.8, com **K-Nearest Neighbors (KNN)** (0.897) performando melhor que **Random Forest** (0.848), a performance dos modelos em relação a classe 1 é diferente. 
+
+Em relação a precisão, ou seja, a assertividade dos vinhos classificados como de qualidade (1) pelo algorotimo, KNN se destaca. Nesse modelo, 65.0% dos vinhos atribuídos como de alta qualidade realmente o são, vencendo Random Forest que possui precisão de 45.5%.
+
+Sobre recall, ou seja, a capacidade de modelo em encontrar os vinhos de qualidade (1) corretamente, o cenário se inverte com Random Forest (74,1%) e KNN (48.1%).
+
+Por fim, o *F1-Score* de ambos os modelos é bem similar: Random Forest (56.3%) e KNN (55.3%)
+
+<img width="557" height="312" alt="image" src="https://github.com/user-attachments/assets/56616051-7526-4347-926d-39dd136cba5b" />
+
+Essa diferença entre as métricas de validação nos dois algoritmos também é observada na matriz de confusão. Para KNN, o gargalo são os vinhos que ele deixa de classificar como alta qualidade, já para Random Forest ele classifica a maior parte dos vinhos de alta qualidade, mas incluir também vinhos que não o são.
+
+<img width="597" height="261" alt="image" src="https://github.com/user-attachments/assets/dba1f34a-75fd-4687-8832-00ddbfebd396" />
+
+
+
+### 6. Interpretação dos Resultados 
+
 
 ## 7. Referências 
 
