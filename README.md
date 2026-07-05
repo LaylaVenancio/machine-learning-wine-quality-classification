@@ -14,25 +14,25 @@ Para atingir esse objetivo, foram construídos dois modelos, um baseado no algor
 
 <img width="755" height="392" alt="image" src="https://github.com/user-attachments/assets/59d0032f-0c87-41b1-a472-047bd9123d11" />
 
-* **Alcohol (0.40):** A relação entre *alcohol* e *high_quality* é moderada (+0.4) e diretamente proporcional. Na experiência da degustação do vinho, a quantidade de álcool se relaciona com o "corpo" da bebida, sendo assim, vinhos de 12,5% a 14% tendem a ter corpo médio, que agrada a maioria dos paladares (EVINO, [s.d.]).
+* **Alcohol (0.40):** A relação entre *alcohol* e *high_quality* é moderada (+0.4) e diretamente proporcional. Na experiência da degustação do vinho, a quantidade de álcool se relaciona com o "corpo" da bebida, sendo assim, vinhos de 12,5% a 14% de álcool tendem a ter corpo médio, que agrada a maioria dos paladares (EVINO, [s.d.]).
 
 * **Volatile Acidity (-0.30):** A relação entre *Volatile Acidity* e *high_quality* é moderada (-0.3) e inversamente proporcional. A acidez volatil é associada ao sabor de vinagre no vinho, prejudicando o paladar e acendendo um alerta sobre a deterioração da bebida (WINE ENTHUSIAST, [s.d.]).
   
-* **Citric Acidity (0.25):** A relação entre *Citric Acidity* e *high_quality* é fraca (0.25) e diretamente proporcional. O ácido cítrico está presente em baixa quantidade nas uvas, mas em muitos casos ele é adicionado como um conservante para o vinho (BIOTECSUL, [s.d.]).
+* **Citric Acidity (0.25):** A relação entre *Citric Acidity* e *high_quality* é fraca (0.25) e diretamente proporcional. O ácido cítrico está presente em baixa quantidade nas uvas, mas em muitos casos é adicionado como um conservante para o vinho (BIOTECSUL, [s.d.]).
   
 * **Sulphates (0.21):** A relação entre *Sulphates* e *high_quality* é fraca (0.21) e diretamente proporcional. Os sulfitos podem surgir naturalmente durante a fermentação do vinho ou serem adicionados durante o processo com o objetivo de conservar a bebida (RAW WINE, [s.d.]).
 
-Podemos perceber, que entre as quatro variáveis que mais estão correlacionadas com *high_quality*, duas delas agem sobre a conservação da bebida (*Citric Acidity* e *Sulphates*) e duas no paladar (*alcohol* e *volatile acidity*). 
+Podemos perceber, que entre as quatro variáveis que mais estão correlacionadas com *high_quality*, duas delas agem sobre a conservação da bebida (*Citric Acidity* e *Sulphates*) e as demais no paladar (*alcohol* e *volatile acidity*). 
 
-Sobre **multicolinearidade**, ou seja, variáveis explicativas que possuem relação entre si, como *Fixed Acidity* e *PH* (-0.69). O entendimento é por manter todas as varíaveis, pois pelo valor da correlação e a escolha dos modelos, **K-Nearest Neighbors (KNN)** e **Random Forest**, o impacto, caso exista, será mínimo.
+Sobre **multicolinearidade**, ou seja, variáveis explicativas que possuem relação entre si, como *Fixed Acidity* e *PH* (-0.69). A decisão foi manter todas as variáveis, pois, dado o valor da correlação e a escolha dos modelos (KNN e Random Forest), o impacto, caso exista, será mínimo.
 
 ### 2.2 Distribuição de variáveis
 
 <img width="1121" height="873" alt="image" src="https://github.com/user-attachments/assets/ebdb50a2-e983-4643-b1c7-07371cbd33a1" />
 
-Em relação a distribuição das variáveis mais correlacionadas com *high_quality* - *alcohol, volatile acidity, citric acidity e sulphates* - todas são **assimetricas para a direita**, mas com variada intensidade. 
+Em relação a distribuição das variáveis mais correlacionadas com *high_quality* - *alcohol, volatile acidity, citric acidity e sulphates* - todas são **assimétricas para a direita**, mas com variada intensidade. 
 
-Sobre as demais variáveis qualitativas, a tendência de **assimetria à direita** se mantém. Esse comportamento indica que a massa de dados tende a se concentrar em valores menores, mas que existem outliers formando uma cauda longa.
+Sobre as demais variáveis explicativas, a tendência de **assimetria à direita** se mantém. Esse comportamento indica que a massa de dados tende a se concentrar em valores menores, mas que existem outliers formando uma cauda longa.
 
 <img width="352" height="265" alt="image" src="https://github.com/user-attachments/assets/cc3790af-3bfd-4c05-bacc-5662a7db4191" />
 
@@ -48,7 +48,7 @@ Com base no boxplot das variáveis explicativas do dataset, é possível percebe
 
 **Valores inconsistentes**
 
-Nesta etapa, foi identificada a **ausência de valores nulos** e a **presença de 125 linhas duplicadas**. Esse valor representa aproximadamente 10% da base de 1.142 registros e a decisão foi por excluir as duplicatas na etapa de pré-processamento, a fim de evitar o overfitting do modelo.
+Nesta etapa, foi identificada a **ausência de valores nulos** e a **presença de 125 linhas duplicadas**. Esse valor representa aproximadamente 10% da base de 1.142 registros e a decisão foi por excluir as duplicatas na etapa de pré-processamento, a fim de evitar o overfitting dos modelos.
 
 ### 2.4 Balanceamento das Classes
 
@@ -64,11 +64,11 @@ Nesta etapa foi realizada a exclusão das colunas *quality* e *id*, inúteis par
 
 **Normalização dos dados**
 
-Optei por realizar a normalização das variáveis explicativas porque originalmente elas estavam em diferentes escalas, o que poderia influenciar o modelo negativamente. 
+Optou-se por realizar a normalização das variáveis explicativas porque originalmente elas estavam em diferentes escalas, o que poderia influenciar o modelo negativamente. 
 
-Como primeira ação desta etapa, realizei a separação dos dados entre treino e teste, para evitar que houvesse o vazamento de dados. Nesse processo, foi utilizado o parâmetro *stratify=y* para garantir que a proporção entre as classes mantenha a proporção.
+Como primeira ação desta etapa, realizou-se a separação dos dados entre treino e teste, para evitar que houvesse vazamento de dados. Nesse processo, foi utilizado o parâmetro *stratify=y* para garantir que a manutenção da proporção entre as classes.
 
-Na sequência, utilizei a normalização com *StandardScaler* que modifica os dados para que eles tenham média igual a 0 e desvio padrão igual a 1. A escolha por essa técnica em detrimento da *MinMaxScaler* se dá pela existência de outliers no dataset, a *StandardScaler* não impõe limite fixo aos valores finais gerados, evitando o achamento dos dados em um dos extremos.
+Na sequência, utilizou-se a normalização com *StandardScaler* que modifica os dados para que eles tenham média igual a 0 e desvio padrão igual a 1. A escolha por essa técnica em detrimento da *MinMaxScaler* se dá pela existência de outliers no dataset, a *StandardScaler* não impõe limite fixo aos valores finais gerados, evitando o achatamento dos dados em um dos extremos.
 
 ### 4. Desenvolvimento de Modelos
 
@@ -90,7 +90,7 @@ O *F1-score* foi escolhido como critério de seleção por ser a métrica mais a
 
 **Random Forest**
 
-Para definir o hiperparâmetro *max_depth*, o limite de perguntas sequenciais que ela pode fazer até chegar à classificação final de um dado, foram testados todos os valores inteiros de 2 a 20. Para cada valor, o *F1-score* foi estimado e o melhor *max_depth* encontrado foi 3.
+Para definir o hiperparâmetro *max_depth*, o limite de perguntas sequenciais que uma árvore pode fazer até chegar à classificação final de um dado, foram testados todos os valores inteiros de 2 a 20. Para cada valor, o *F1-score* foi estimado e o melhor *max_depth* encontrado foi 3.
 
 O *max_depth* foi selecionado utilizando o *F1-score* como critério — pela mesma razão descrita na seção anterior: é a métrica mais adequada para problemas com desbalanceamento de classes. Além disso, o modelo foi configurado com *class_weight='balanced'*, que atribui pesos inversamente proporcionais à frequência de cada classe durante o treino com o objetivo de compensar o desbalanceamento das classes.
 
@@ -118,10 +118,9 @@ Por fim, o *F1-Score* de ambos os modelos é bem similar: Random Forest (56.3%) 
 
 <img width="557" height="312" alt="image" src="https://github.com/user-attachments/assets/56616051-7526-4347-926d-39dd136cba5b" />
 
-Essa diferença entre as métricas de validação nos dois algoritmos também é observada na matriz de confusão. Para KNN, o gargalo são os vinhos que ele deixa de classificar como alta qualidade, já para Random Forest ele classifica a maior parte dos vinhos de alta qualidade, mas incluir também vinhos que não o são.
+Essa diferença entre as métricas de validação nos dois algoritmos também é observada na matriz de confusão. Para KNN, o gargalo são os vinhos que ele deixa de classificar como alta qualidade, já para Random Forest ele classifica a maior parte dos vinhos de alta qualidade, mas inclui também vinhos que não o são.
 
 <img width="597" height="261" alt="image" src="https://github.com/user-attachments/assets/dba1f34a-75fd-4687-8832-00ddbfebd396" />
-
 
 
 ### 6. Interpretação dos Resultados 
