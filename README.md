@@ -66,7 +66,7 @@ Nesta etapa foi realizada a exclusão das colunas *quality* e *id*, inúteis par
 
 Optou-se por realizar a normalização das variáveis explicativas porque originalmente elas estavam em diferentes escalas, o que poderia influenciar o modelo negativamente. 
 
-Como primeira ação desta etapa, realizou-se a separação dos dados entre treino e teste, para evitar que houvesse vazamento de dados. Nesse processo, foi utilizado o parâmetro *stratify=y* para garantir que a manutenção da proporção entre as classes.
+Como primeira ação desta etapa, realizou-se a separação dos dados entre treino e teste, para evitar que houvesse vazamento de dados. Nesse processo, foi utilizado o parâmetro *stratify=y* para garantir a manutenção da proporção entre as classes.
 
 Na sequência, utilizou-se a normalização com *StandardScaler* que modifica os dados para que eles tenham média igual a 0 e desvio padrão igual a 1. A escolha por essa técnica em detrimento da *MinMaxScaler* se dá pela existência de outliers no dataset, a *StandardScaler* não impõe limite fixo aos valores finais gerados, evitando o achatamento dos dados em um dos extremos.
 
