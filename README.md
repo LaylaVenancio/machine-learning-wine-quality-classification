@@ -120,7 +120,7 @@ Por fim, o *F1-Score* de ambos os modelos é bem similar: **Random Forest** (56.
 
 <img width="557" height="312" alt="image" src="https://github.com/user-attachments/assets/56616051-7526-4347-926d-39dd136cba5b" />
 
-Essa diferença entre as métricas de validação nos dois algoritmos também é observada na matriz de confusão. Para **KNN**, o gargalo são os falsos negativos, ou seja, os vinhos que ele deixa de classificar como alta qualidade (1). Já para **Random Forest**, a situação se inverte e ele classifica a maior parte dos vinhos de alta qualidade, mas aumenta também o número de falsos positivos.
+Essa diferença entre as métricas de validação nos dois algoritmos também é observada na matriz de confusão. Para **KNN**, o gargalo são os falsos negativos, ou seja, os vinhos que ele deixa de classificar como alta qualidade (1). Já para **Random Forest**, a situação se inverte e ele classifica corretamente a maior parte dos vinhos de alta qualidade, mas aumenta também o número de falsos positivos.
 
 <img width="597" height="261" alt="image" src="https://github.com/user-attachments/assets/dba1f34a-75fd-4687-8832-00ddbfebd396" />
 
