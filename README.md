@@ -100,7 +100,7 @@ A busca pelo max_depth ótimo se justifica porque árvores sem restrição de pr
 
 O gráfico de importância das variáveis confirma os achados da análise exploratória de dados (EDA): *alcohol, sulphates, volatile acidity e citric acid* — as quatro variáveis de maior correlação com *high_quality* foram também as mais importantes para o algoritmo. 
 
-A convergência entre a análise exploratória e o critério interno do **Random Forest** reforça a consistência da análise realizada. Como ponto de diferenciação, *sulphates* ocupou a segunda posição em importância no **Random Forest**, acima de volatile acidity e citric acid — uma inversão em relação ao ranking de correlação de Pearson da EDA, onde volatile acidity ocupou o segundo lugar. Isso sugere que sulphates captura padrões não-lineares relevantes para a classificação que a correlação linear não dimensionava completamente.
+A convergência entre a análise exploratória e o critério interno do **Random Forest** reforça a consistência da análise realizada. Como ponto de diferenciação, *sulphates* ocupou a segunda posição em importância no **Random Forest**, acima de *volatile acidity* e *citric acid* — uma inversão em relação ao ranking de correlação de Pearson da EDA, onde *volatile acidity* ocupou o segundo lugar. Isso sugere que *sulphates* captura padrões não-lineares relevantes para a classificação que a correlação linear não dimensionava completamente.
 
 <img width="1252" height="622" alt="image" src="https://github.com/user-attachments/assets/0296b3e1-5ee2-4f91-8804-4ee5477ff65c" />
 
