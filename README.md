@@ -94,7 +94,7 @@ Para definir o hiperparâmetro *max_depth*, o limite de perguntas sequenciais qu
 
 O *max_depth* foi selecionado utilizando o *F1-score* como critério — pela mesma razão descrita na seção anterior: é a métrica mais adequada para problemas com desbalanceamento de classes. Além disso, o modelo foi configurado com *class_weight='balanced'*, que atribui pesos inversamente proporcionais à frequência de cada classe durante o treino com o objetivo de compensar o desbalanceamento das classes.
 
-A busca pelo max_depth ótimo se justifica porque árvores sem restrição de profundidade tendem a memorizar o conjunto de treino (overfitting). Dessa forma, o valor ótimo encontrado foi *max_depth*=3.
+A busca pelo max_depth ótimo se justifica porque árvores sem restrição de profundidade tendem a memorizar o conjunto de treino (overfitting).
 
 <img width="1247" height="623" alt="image" src="https://github.com/user-attachments/assets/0d8c4f9c-5344-42fa-b8b1-74e473388761" />
 
